@@ -1,0 +1,19 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  # Build a Docker container holding VEP and some
+  # cached annotations.  Larger annotations such as dbNSFP
+  # should be cached separately on Cloud Storage to keep
+  # the resulting container within a reasonable size limit.
+  args: ['build', '-f', 'Dockerfile.vep',
+  '-t', 'gcr.io/$PROJECT_ID/vep${_CONTAINER_SUFFIX}',
+  '--build-arg', 'ENSEMBL_RELEASE=${_ENSEMBL_RELEASE}',
+  '--build-arg', 'GENOME_ASSEMBLY=${_GENOME_ASSEMBLY}',
+  '--build-arg', 'DBNSFP_BASE=${_DBNSFP_BASE}',
+  '.']
+
+# Maximum time to wait for all build steps to complete.
+timeout: '7200s'
+
+# Push the VEP container to the Google Container Registry.
+images:
+- 'gcr.io/$PROJECT_ID/vep${_CONTAINER_SUFFIX}'

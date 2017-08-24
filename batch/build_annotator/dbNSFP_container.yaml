@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  # Build a Docker container holding the tools and scripts needed
+  # to create a cache of dbNSFP for use with VEP.
+  args: ['build', '-f', 'Dockerfile.dbNSFP',
+  '-t', 'gcr.io/$PROJECT_ID/dbnsfp_cache_builder${_CONTAINER_SUFFIX}',  '.']
+
+# Push the container to the Google Container Registry.
+images:
+- 'gcr.io/$PROJECT_ID/dbnsfp_cache_builder${_CONTAINER_SUFFIX}'

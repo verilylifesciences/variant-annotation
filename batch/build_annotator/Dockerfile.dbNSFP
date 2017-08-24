@@ -1,0 +1,30 @@
+# Start from this container so that gcloud and all its dependencies
+# are already available.
+FROM gcr.io/cloud-builders/gcloud
+
+RUN apt-get -y update && apt-get install -y \
+    apt-transport-https \
+    build-essential \
+    ca-certificates \
+    curl \
+    tabix \
+    unzip \
+    wget \
+    zlib1g-dev
+
+# Install newer version of bgzip so that the --threads option is available.
+RUN cd /opt && \
+    export VER=1.3.1 && \
+    export NAMEVER=htslib-${VER} && \
+    wget https://github.com/samtools/htslib/releases/download/${VER}/${NAMEVER}.tar.bz2 && \
+    tar xjf ${NAMEVER}.tar.bz2 && \
+    cd ${NAMEVER} && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig && \
+    rm -rf /opt/${NAMEVER}.tar.bz2 /opt/${NAMEVER}
+
+COPY download_dbNSFP.sh /opt/download_dbNSFP.sh
+COPY build_databases.sh /opt/build_databases.sh
+
+ENTRYPOINT ["bash"]

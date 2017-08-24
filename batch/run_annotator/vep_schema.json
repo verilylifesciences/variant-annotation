@@ -1,0 +1,372 @@
+[
+  {
+    "name": "input",
+    "type": "string",
+    "mode": "required",
+    "description": "original vcf input line"
+  },
+  {
+    "name": "id",
+    "type": "string",
+    "mode": "required"
+  },
+  {
+    "name": "seq_region_name",
+    "type": "string",
+    "mode": "required"
+  },
+  {
+    "name": "start",
+    "type": "integer",
+    "mode": "required"
+  },
+  {
+    "name": "end",
+    "type": "integer",
+    "mode": "required"
+  },
+  {
+    "name": "strand",
+    "type": "integer",
+    "mode": "required"
+  },
+  {
+    "name": "assembly_name",
+    "type": "string",
+    "mode": "required"
+  },
+  {
+    "name": "allele_string",
+    "type": "string",
+    "mode": "nullable"
+  },
+  {
+    "name": "most_severe_consequence",
+    "type": "string",
+    "mode": "required"
+  },
+  {
+    "name": "variant_class",
+    "type": "string",
+    "mode": "nullable"
+  },
+  {
+    "name": "transcript_consequences",
+    "type": "record",
+    "mode": "repeated",
+    "fields": [
+      {
+        "name": "transcript_id",
+        "type": "string",
+        "mode": "required"
+      },
+      {
+        "name": "gene_id",
+        "type": "string",
+        "mode": "required"
+      },
+      {
+        "name": "impact",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "consequence_terms",
+        "type": "string",
+        "mode": "repeated"
+      },
+      {
+        "name": "variant_allele",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "allele_num",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "strand",
+        "type": "integer",
+        "mode": "required"
+      },
+      {
+        "name": "codons",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "amino_acids",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "cds_start",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "cds_end",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "flags",
+        "type": "string",
+        "mode": "repeated"
+      },
+      {
+        "name": "cdna_start",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "cdna_end",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "protein_start",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "protein_end",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "distance",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "bp_overlap",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "percentage_overlap",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "hgvsc",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "hgvsp",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "hgvs_offset",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "polyphen_prediction",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "polyphen_score",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "sift_prediction",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "sift_score",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "condel",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "exac_adj_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "exac_adj_af",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "exac_nontcga_adj_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "exac_nontcga_adj_af",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "exac_nonpsych_adj_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "exac_nonpsych_adj_af",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "genocanyon_score",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "phylop100way_vertebrate",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "phylop20way_mammalian",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "phastcons100way_vertebrate",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "phastcons20way_mammalian",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "siphy_29way_logodds",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "twinsuk_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "twinsuk_af",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "clinvar_rs",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "clinvar_trait",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "ensembl_geneid",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "ensembl_transcriptid",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "ensembl_proteinid",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "lrt_score",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "rvis",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "gdi",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "gtex_v6_gene",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "gtex_v6_tissue",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "alspac_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "alspac_af",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "esp6500_aa_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "esp6500_aa_af",
+        "type": "float",
+        "mode": "nullable"
+      },
+      {
+        "name": "esp6500_ea_ac",
+        "type": "integer",
+        "mode": "nullable"
+      },
+      {
+        "name": "esp6500_ea_af",
+        "type": "float",
+        "mode": "nullable"
+      }
+    ]
+  },
+  {
+    "name": "intergenic_consequences",
+    "type": "record",
+    "mode": "repeated",
+    "fields": [
+      {
+        "name": "impact",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "consequence_terms",
+        "type": "string",
+        "mode": "repeated"
+      },
+      {
+        "name": "variant_allele",
+        "type": "string",
+        "mode": "nullable"
+      },
+      {
+        "name": "allele_num",
+        "type": "integer",
+        "mode": "nullable"
+      }
+    ]
+  }
+]

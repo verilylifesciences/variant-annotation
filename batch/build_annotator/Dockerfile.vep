@@ -1,0 +1,90 @@
+# Example:
+#
+# docker build \
+#   --build-arg ENSEMBL_RELEASE=88 \
+#   --build-arg GENOME_ASSEMBLY=GRCh38 \
+#   --build-arg DBNSFP_BASE=gs://my-bucket/dbNSFP \
+#   --tag vep_docker_test \
+#   .
+#
+# This requires the dbNSFP databases to be loaded to GCS via the
+# build_databases.sh script, for example:
+#
+# ./build_databases.sh gs://my-bucket/dbNSFP_GRCh38/ dbNSFPv3.4c.zip
+#
+# TODO: Determine an alternate strategy for the dbNSFP
+# dependency. This currently uses a hardcoded environment variable to
+# hold the cloud storage path to dbNSFP because it is too large to
+# include within the Docker image. The script that invokes VEP will
+# currently fail if dbNSFP is not available at the path indicated by
+# the environment variable.
+
+# Start from this container so that gcloud and all its dependencies
+# are already available.
+FROM gcr.io/cloud-builders/gcloud
+
+ARG ENSEMBL_RELEASE=88
+ARG GENOME_ASSEMBLY=GRCh38
+# No default value for this argument.  See build_databases.sh for code that
+# loads these tables.
+ARG DBNSFP_BASE
+
+# Make this build argument available in the container as an environment
+# variable.
+ENV DBNSFP_BASE="${DBNSFP_BASE}"
+ENV GENOME_ASSEMBLY="${GENOME_ASSEMBLY}"
+ENV VEP_SPECIES="homo_sapiens"
+ENV VEP_BASE=/opt/variant_effect_predictor
+
+RUN apt-get -y update && apt-get install -y \
+    build-essential \
+    curl \
+    gawk \
+    git \
+    libarchive-zip-perl \
+    libdbd-mysql-perl \
+    libdbi-perl \
+    libfile-copy-recursive-perl \
+    libhts0 \
+    libjson-perl \
+    libmodule-build-perl \
+    tabix \
+    unzip \
+    wget \
+    zlib1g-dev
+
+# Install VEP per the instructions on
+# http://www.ensembl.org/info/docs/tools/vep/script/vep_download.html#installer
+RUN git clone https://github.com/Ensembl/ensembl-vep.git ${VEP_BASE}
+
+WORKDIR ${VEP_BASE}
+
+RUN git checkout release/${ENSEMBL_RELEASE}
+
+# Download the cache database separately.  Downloading via vep installation
+# option -c results in timeout errors.
+RUN mkdir -p $HOME/.vep && \
+    cd $HOME/.vep && \
+    curl -O "ftp://ftp.ensembl.org/pub/release-${ENSEMBL_RELEASE}/variation/VEP/${VEP_SPECIES}_vep_${ENSEMBL_RELEASE}_${GENOME_ASSEMBLY}.tar.gz" && \
+    tar xzf "${VEP_SPECIES}_vep_${ENSEMBL_RELEASE}_${GENOME_ASSEMBLY}.tar.gz"
+
+RUN perl INSTALL.pl \
+    --AUTO afl \
+    --SPECIES "${VEP_SPECIES}" \
+    --ASSEMBLY "${GENOME_ASSEMBLY}"
+
+# Configure Condel plugin.
+RUN curl -Lk \
+  "https://github.com/Ensembl/VEP_plugins/archive/release/${ENSEMBL_RELEASE}.tar.gz" | \
+  tar xz --strip-components=2 \
+    "VEP_plugins-release-${ENSEMBL_RELEASE}/config/Condel" && \
+  sed -i "s#path/to/config#${VEP_BASE}#" \
+    Condel/config/condel_SP.conf
+
+# Install Condel plugin.
+RUN perl INSTALL.pl --AUTO p --PLUGINS Condel
+
+# Install dbNSFP plugin.
+RUN perl INSTALL.pl --AUTO p --PLUGINS dbNSFP
+
+ENTRYPOINT ["bash"]
