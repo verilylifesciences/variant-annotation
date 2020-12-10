@@ -45,7 +45,7 @@ RUN apt-get -y update && apt-get install -y \
     libdbd-mysql-perl \
     libdbi-perl \
     libfile-copy-recursive-perl \
-    libhts0 \
+    libhts1 \
     libjson-perl \
     libmodule-build-perl \
     tabix \
@@ -70,6 +70,7 @@ RUN mkdir -p $HOME/.vep && \
 
 RUN perl INSTALL.pl \
     --AUTO afl \
+    --NO_UPDATE \
     --SPECIES "${VEP_SPECIES}" \
     --ASSEMBLY "${GENOME_ASSEMBLY}"
 
